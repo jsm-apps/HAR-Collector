@@ -14,11 +14,11 @@ class CollectorGui():
     def toggle_automation_fields(self):
         """Enable automation-specific fields only when automation is checked."""
         if self.automation_var.get():
-            scope_hosts_text.config(state="normal")
-            crawl_minutes_entry.config(state="normal")
+            self.scope_hosts_text.config(state="normal")
+            self.crawl_minutes_entry.config(state="normal")
         else:
-            scope_hosts_text.config(state="disabled")
-            crawl_minutes_entry.config(state="disabled")
+            self.scope_hosts_text.config(state="disabled")
+            self.crawl_minutes_entry.config(state="disabled")
 
 
     def build_gui(self):
@@ -155,8 +155,8 @@ class CollectorGui():
             pady=8
         )
 
-        scope_hosts_text = tk.Text(main_frame, height=6, width=50, wrap="none", state="disabled")
-        scope_hosts_text.grid(row=4, column=1, sticky="ew", pady=8)
+        self.scope_hosts_text = tk.Text(main_frame, height=6, width=50, wrap="none", state="disabled")
+        self.scope_hosts_text.grid(row=4, column=1, sticky="ew", pady=8)
 
 
         # --------------------------------------------------
@@ -174,8 +174,8 @@ class CollectorGui():
             pady=8
         )
 
-        crawl_minutes_entry = ttk.Entry(main_frame, textvariable=crawl_minutes_var, state="disabled")
-        crawl_minutes_entry.grid(row=5, column=1, sticky="ew", pady=8)
+        self.crawl_minutes_entry = ttk.Entry(main_frame, textvariable=crawl_minutes_var, state="disabled")
+        self.crawl_minutes_entry.grid(row=5, column=1, sticky="ew", pady=8)
 
 
         # --------------------------------------------------
