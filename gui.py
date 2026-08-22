@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
 from playwright.sync_api import sync_playwright
+from datetime import datetime
 
 class CollectorGui():
     def __init__(self):
@@ -204,7 +205,8 @@ class CollectorGui():
         stop_button.grid(row=0, column=2, padx=8)
     
     def btn_start_clicked(self):
-        harfile = self.output_directory_var.get() + "/browser_traffic.har"
+        filename = datetime.now().strftime("%d-%B-%Y-%H%M")
+        harfile = self.output_directory_var.get() + "/" + filename + ".har"
         self.startBrowser(harfile)
 
 
