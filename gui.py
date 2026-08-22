@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
+from playwright.sync_api import sync_playwright
 
 class CollectorGui():
     def __init__(self):
@@ -193,7 +194,7 @@ class CollectorGui():
         button_frame = ttk.Frame(main_frame)
         button_frame.grid(row=7, column=0, columnspan=2)
 
-        start_button = ttk.Button(button_frame, text="Start")
+        start_button = ttk.Button(button_frame, text="Start", command=self.btn_start_clicked)
         start_button.grid(row=0, column=0, padx=8)
 
         pause_button = ttk.Button(button_frame, text="Pause")
@@ -201,7 +202,51 @@ class CollectorGui():
 
         stop_button = ttk.Button(button_frame, text="Stop")
         stop_button.grid(row=0, column=2, padx=8)
+    
+    def btn_start_clicked(self):
+        harfile = self.output_directory_var.get() + "/browser_traffic.har"
+        self.startBrowser(harfile)
 
+
+    def startBrowser(self, HAR_FILE):
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=False
+            )
+
+            context = browser.new_context(
+                record_har_path=HAR_FILE,
+                record_har_mode="full",
+                record_har_content="embed",
+            )
+
+            page = context.new_page()
+
+            # Optional starting page
+            # page.goto("https://example.com")
+
+            print("Browser started.")
+            print("Browse normally.")
+            print("Close the browser window when finished.")
+
+            try:
+                # Keep Python alive until the browser/page is closed
+                page.wait_for_event("close", timeout=0)
+            except Exception:
+                pass
+
+            # Important: closing the context finalises the HAR file.
+            try:
+                context.close()
+            except Exception:
+                pass
+
+            try:
+                browser.close()
+            except Exception:
+                pass
+
+        print("HAR saved to: {}".format(HAR_FILE))
 
     def mainloop(self):
         self.root.mainloop()
