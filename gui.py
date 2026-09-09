@@ -214,11 +214,12 @@ class CollectorGui():
     def startBrowser(self, HAR_FILE, proxy):
         with sync_playwright() as p:
             browser = None
+            ignore_https_errors=False
             if proxy:
                 browser = p.chromium.launch(proxy={"server": proxy},
-                    headless=False,
-                    ignore_https_errors=True
+                    headless=False
                 )
+                ignore_https_errors=True
             else:
                 browser = p.chromium.launch(
                     headless=False
@@ -228,6 +229,7 @@ class CollectorGui():
                 record_har_path=HAR_FILE,
                 record_har_mode="full",
                 record_har_content="embed",
+                ignore_https_errors=ignore_https_errors
             )
 
             page = context.new_page()
