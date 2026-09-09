@@ -217,6 +217,7 @@ class CollectorGui():
             if proxy:
                 browser = p.chromium.launch(proxy={"server": proxy},
                     headless=False,
+                    ignore_https_errors=True
                 )
             else:
                 browser = p.chromium.launch(
