@@ -206,20 +206,22 @@ class CollectorGui():
     
     def btn_start_clicked(self):
         proxy = self.proxy_var.get()
-        print(proxy)
-        if proxy:
-            print("PROXY SUPPORT")
-
         filename = datetime.now().strftime("%d-%B-%Y-%H%M")
         harfile = self.output_directory_var.get() + "/" + filename + ".har"
-        #self.startBrowser(harfile)
+        self.startBrowser(harfile, proxy)
 
 
-    def startBrowser(self, HAR_FILE):
+    def startBrowser(self, HAR_FILE, proxy):
         with sync_playwright() as p:
-            browser = p.chromium.launch(
-                headless=False
-            )
+            browser = None
+            if proxy:
+                browser = p.chromium.launch(proxy={"server": proxy},
+                    headless=False,
+                )
+            else:
+                browser = p.chromium.launch(
+                    headless=False
+                )
 
             context = browser.new_context(
                 record_har_path=HAR_FILE,
