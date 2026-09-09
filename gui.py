@@ -205,7 +205,7 @@ class CollectorGui():
         stop_button.grid(row=0, column=2, padx=8)
     
     def btn_start_clicked(self):
-        proxy = self.proxy_var
+        proxy = self.proxy_var.get()
         print(proxy)
         if proxy:
             print("PROXY SUPPORT")
