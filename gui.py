@@ -45,7 +45,7 @@ class CollectorGui():
         # --------------------------------------------------
 
         self.output_directory_var = tk.StringVar()
-        proxy_var = tk.StringVar()
+        self.proxy_var = tk.StringVar()
         start_url_var = tk.StringVar()
 
         self.automation_var = tk.BooleanVar(value=False)
@@ -94,7 +94,7 @@ class CollectorGui():
             pady=8
         )
 
-        proxy_entry = ttk.Entry(main_frame, textvariable=proxy_var)
+        proxy_entry = ttk.Entry(main_frame, textvariable=self.proxy_var)
         proxy_entry.grid(row=1, column=1, sticky="ew", pady=8)
 
 
@@ -205,9 +205,14 @@ class CollectorGui():
         stop_button.grid(row=0, column=2, padx=8)
     
     def btn_start_clicked(self):
+        proxy = self.proxy_var
+        print(proxy)
+        if proxy:
+            print("PROXY SUPPORT")
+
         filename = datetime.now().strftime("%d-%B-%Y-%H%M")
         harfile = self.output_directory_var.get() + "/" + filename + ".har"
-        self.startBrowser(harfile)
+        #self.startBrowser(harfile)
 
 
     def startBrowser(self, HAR_FILE):
